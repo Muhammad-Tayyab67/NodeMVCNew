@@ -2,23 +2,23 @@ const express = require("express");
 const cors = require("cors");
 
 const app = express();
+app.use(express.json());
 
-db.sequelize.sync({force:false});
+const db=require('./Models')
 
-var corsOptions = {
-  origin: "http://localhost:8081"
- };
 
- app.use(cors(corsOptions));
- app.use(express.json());
+const router = require('./Routers/adminrouter.js')
+app.use('/api/admin', router)
+
+
  app.use(express.urlencoded({ extended: true }));
 
  app.get('/',function(res,req){
-console.log('hello ')
+console.log('hello')
 }
 )
 
- const PORT=process.env.PORT || 8088
+ const PORT=process.env.PORT || 6066
 
  app.listen(PORT,()=>
  {console.log('server running on Port :'+PORT)});

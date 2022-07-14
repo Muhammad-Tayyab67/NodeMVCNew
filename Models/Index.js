@@ -1,9 +1,8 @@
 const DBconfig=require('../Config/DBconfig.js')
 
-const sequelize = require('sequelize');
-const { Sequelize } = require('sequelize');
+const Sequelize = require('sequelize');
 
-const sequelize = new sequelize(
+const sequelize = new Sequelize(
   DBconfig.DB,
   DBconfig.USER,
   DBconfig.PASSWORD,
@@ -21,11 +20,27 @@ const sequelize = new sequelize(
   }
 );
 
+sequelize.authenticate()
+.then(() => {
+    console.log('connected..')
+})
+.catch(err => {
+    console.log('Error'+ err)
+})
+
+
+
 const db={};
 
 db.sequelize= sequelize;
 db.Sequelize= Sequelize;
 
-db.admin=require('./admin.js')(sequelize,Sequelize);
+db.sequelize.sync({ force: false })
+.then(() => {
+    console.log('yes re-sync done!')
+})
+
+
+db.admin=require('../Models/admin.js')(sequelize,Sequelize);
 
 module.exports = db;
