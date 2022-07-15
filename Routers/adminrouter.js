@@ -2,6 +2,7 @@ const admincontroller=require('../Controllers/admin_controller.js');
 
 const router=require('express').Router();
 
+
 router.post('/addAdmin',admincontroller.addAdmin);
 
 router.get('/GetAllAdmin',admincontroller.getAllAdmin);

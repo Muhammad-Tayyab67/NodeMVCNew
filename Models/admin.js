@@ -15,6 +15,10 @@ module.exports=(sequelize, Sequelize)=>{
         admin_level:{
             type :Sequelize.STRING,
             allowNull :true
+        },
+        admin_pas:{
+            type : Sequelize.STRING,
+            allowNull :false
         }
     })
     return admin;

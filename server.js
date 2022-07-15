@@ -8,7 +8,10 @@ const db=require('./Models')
 
 
 const router = require('./Routers/adminrouter.js')
+const signac=require("./Routers/authroute.js")
+
 app.use('/api/admin', router)
+app.use('/api/admin', signac)
 
 
  app.use(express.urlencoded({ extended: true }));
