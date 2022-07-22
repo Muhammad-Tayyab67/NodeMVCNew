@@ -7,14 +7,17 @@ app.use(express.json());
 const db=require('./Models')
 
 
-const router = require('./Routers/adminrouter.js')
+const router = require('./Routers/usersrouter.js')
 const signac=require("./Routers/authroute.js")
+const RolePerm=require("./Routers/RolePermissionRoute.js")
 
-app.use('/api/admin', router)
-app.use('/api/admin', signac)
+app.use('/api/users', RolePerm)
+app.use('/api/users', router)
+app.use('/api/users', signac)
 
 
- app.use(express.urlencoded({ extended: true }));
+app.use('/uploads', express.static('uploads'));
+app.use(express.urlencoded({ extended: true }));
 
  app.get('/',function(res,req){
 console.log('hello')
