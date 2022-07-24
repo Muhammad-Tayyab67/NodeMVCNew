@@ -1,9 +1,10 @@
 const express = require("express");
 const cors = require("cors");
+const fileupload=require('express-fileupload')
 
 const app = express();
 app.use(express.json());
-
+app.use(fileupload());
 const db=require('./Models')
 
 

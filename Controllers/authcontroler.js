@@ -14,6 +14,7 @@ const signup=async (req,res)=>{
      users_pas: req.body.users_pas,
      users_level:req.body.users_level,
      profilePic: req.file.path
+    
   }
   
   const users = await user.create(info)

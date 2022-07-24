@@ -1,34 +1,10 @@
 const authcontroller = require('../Controllers/authcontroler.js');
 const verifySignUp=require('../middleware/signupverify.js')
-const multer=require('multer');
-
-
+const upload=require('../middleware/imageupload.js')
 const router = require('express').Router();
+const util=require('util');
+const path=require('path');
 
-const storage = multer.diskStorage({
-  destination: function(req, file, cb) {
-    cb(null, './uploads/');
-  },
-  filename: function(req, file, cb) {
-    cb(null, Date.now() + file.originalname);  
-}
-});
-const fileFilter = (req, file, cb) => {
-  // reject a file
-  if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
-    cb(null, true);
-  } else {
-    console.log('error 420');
-    cb(null, false,);
-  }
-};
-const upload = multer({
-  storage: storage,
-  limits: {
-    fileSize: 1024 * 1024 * 5
-  },
-  fileFilter: fileFilter
-});
 
 router.post('/signup' ,[
     [
@@ -40,7 +16,23 @@ router.post('/signup' ,[
     ]
 ], authcontroller.signup);
 
+router.post('/fileupload', function(req, res) {
+ //console.log(req.files.foo);
+  var file=req.files.foo;
+  var filename=file.name;
+  const extension=path.extname(filename);
+  const allowExtension=/png|jpg|pdf|xlsx|docx/;
+  const md=file.md;
+  const URL="./uploads/"+filename ;
 
+  if(!allowExtension.test(extension)){throw "Un-Supported File Type -- Please Upload .pdf/.xlsx/.docs or .jpeg Files--"}
+  else{
+    util.promisify(file.mv)(""+URL);
+    res.send({ message: "upload successfully!" });
+
+  }
+  
+});
 
 router.post('/signin',authcontroller.signin)
 
