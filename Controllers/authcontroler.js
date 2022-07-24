@@ -1,22 +1,24 @@
-const config=require('../Config/DBconfig.js');
+const config=require('../Config/auth.config');
 const db=require('../Models');
-
-const admin=db.admin;
+const user=db.users;
 var jwt = require("jsonwebtoken");
 
 
-const signup=async(req,res)=>{
 
+
+const signup=async (req,res)=>{
   
+
     let info = {
-      admin_ID: req.body.admin_Id,
-     admin_name:req.body.admin_name,
-     admin_level:req.body.admin_level
+     users_name :req.body.users_name,
+     users_pas: req.body.users_pas,
+     users_level:req.body.users_level,
+     profilePic: req.file.path
   }
   
-  const admin = await admin.create(info)
-  .then(admin => {
-    res.send({ message: "admin registered successfully!" });
+  const users = await user.create(info)
+  .then(users => {
+    res.send({ message: "users registered successfully!" });
   })
   .catch(err => {
     res.status(500).send({ message: err.message });
@@ -25,33 +27,34 @@ const signup=async(req,res)=>{
   }
 
   const signin=async(req,res)=>{
-    const Admin =await admin.findOne({
+    const users =await user.findOne({
         where: {
-          admin_name: req.body.admin_name
+          users_name: req.body.users_name
         }
       })
-        .then(Admin => {
-          if (!Admin) {
-            return res.status(404).send({ message: "admin Not found." });
+        .then(users => {
+          if (!users) {
+            return res.status(404).send({ message: "users Not found." });
           }
     
           
     
-          if (Admin.admin_pass!=req.body.admin_pass) {
+          if (users.users_pass!=req.body.users_pass) {
             return res.status(401).send({
               accessToken: null,
               message: "Invalid Password!"
             });
           }
     
-          var token = jwt.sign({ id: admin.id }, config.secret, {
+          var token = jwt.sign({ id: users.id }, config.secret, {
             expiresIn: 86400 // 24 hours
           });
     
             res.status(200).send({
-              id: Admin.admin_ID,
-              adminname: Admin.admin_name,
-              admin_pass: Admin.admin_pass,
+                message:"Wellcome Page",
+              id: users.users_ID,
+              usersname: users.users_name,
+              users_pass: users.users_pass,
               accessToken: token
             });
             

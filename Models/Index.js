@@ -41,6 +41,11 @@ db.sequelize.sync({ force: false })
 })
 
 
-db.admin=require('../Models/admin.js')(sequelize,Sequelize);
+db.users=require('../Models/users.js')(sequelize,Sequelize);
+db.role=require('../Models/roles.js')(sequelize,Sequelize);
+db.permissions=require('../Models/permissions.js')(sequelize,Sequelize);
+db.rolepermission=require('../Models/role_permission.js')(sequelize,Sequelize);
+
+
 
 module.exports = db;
